@@ -13,6 +13,7 @@ window.onGetUserPos = onGetUserPos
 window.onDeleteLoc = onDeleteLoc
 window.onAddLoc = onAddLoc
 window.onCopyLink = onCopyLink
+window.onUserAns = onUserAns
 
 
 function onInit() {
@@ -65,13 +66,15 @@ function onGetUserPos() {
         })
 }
 
-function onPanTo(lat = 35.6895, lng = 139.6917) {
-    console.log('Panning the Map to,', lat, lng)
+function onPanTo(name, lat = 35.6895, lng = 139.6917) {
+    console.log('Panning the Map to,', name, lat, lng)
     mapService.panTo(lat, lng)
 
     const queryStringParams = `?lat=${lat}&lng=${lng}`
     const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
     window.history.pushState({ path: newUrl }, '', newUrl)
+
+    document.querySelector('.user-pos').innerText = name
 
 }
 
@@ -95,15 +98,14 @@ function onCopyLink() {
 }
 
 function renderLocs(locs) {
-    console.log(locs);
     const strHtmls = locs.map(({ id, lat, lng, name }) => `
     <article class="loc flex flex-column">
     <div class="head flex space-between">
-    <span>${name}</span>
-    <div class="btns-container">
-    <button class="go" onclick="onPanTo(${lat},${lng})">Go</button>
-    <button class="delete" onclick="onDeleteLoc('${id}','${name}')">Delete</button>
-    </div>
+        <span>${name}</span>
+        <div class="btns-container">
+            <button class="go" onclick="onPanTo('${name}',${lat},${lng})">Go</button>
+            <button class="delete" onclick="onDeleteLoc('${id}','${name}')">Delete</button>
+        </div>
     </div>
     <small>Lat:${lat}, Lang:${lng}</small>
     
@@ -141,3 +143,12 @@ function flashMsg(msg) {
         el.classList.remove('open')
     }, 3000)
 }
+function onUserAns(ans, lat, lng) {
+    if (!ans) return mapService.closeWindow()
+    const placeName = document.querySelector('.place-input').value
+    if (!placeName.trim()) return
+    locService.addLocation(placeName, lat, lng)
+    locService.getLocs().then(renderLocs)
+    mapService.closeWindow()
+}
+
