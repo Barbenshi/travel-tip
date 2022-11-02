@@ -2,13 +2,23 @@
     box-sizing: border-box;
 }
 
+html{
+    height: 100%;
+    background-color: var(--primaryClr);
+}
+
 body{
     margin: 0;
-    background-color: var(--clr3);
 }
 
 button {
     cursor: pointer;
+    height: 100%;
+}
+
+main{
+    background-color: var(--clr1);
+    height: 100%;
 }
 
 h1,

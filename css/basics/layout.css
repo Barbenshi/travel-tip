@@ -1,0 +1,27 @@
+@media (max-width:1060px){
+    .map{
+        padding-top:10px;
+        width: 100%;
+    }
+}
+
+@media (min-width:1060px){
+    .main-layout:not(.full){
+        width: var(--l);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    main.flex{
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        padding-inline-end: 10px;
+        padding-inline-start: 10px;
+        padding-top: 10px;
+        gap: 10px;
+    }
+
+    .map{
+        flex-basis: 50%;
+    }
+}
