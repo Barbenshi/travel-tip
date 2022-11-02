@@ -2,6 +2,7 @@ import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
 export const appController = {
     renderLocs,
+    renderMarkers,
 }
 
 window.onload = onInit
@@ -11,15 +12,23 @@ window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onDeleteLoc = onDeleteLoc
 window.onAddLoc = onAddLoc
+window.onCopyLink = onCopyLink
 
 
 function onInit() {
     mapService.initMap()
         .then(() => {
             console.log('Map is ready')
-        })
+        }).then(res => {
+
+            const queryStringParams = new URLSearchParams(window.location.search)
+            const lat = queryStringParams.get('lat') || ''
+            const lng = queryStringParams.get('lng') || 0
+            onPanTo(lat, lng)
+        }
+        )
         .catch(() => console.log('Error: cannot init map'))
-    locService.getLocs().then(renderLocs)
+    locService.getLocs().then(renderLocs).then(renderMarkers)
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -66,13 +75,23 @@ function onPanTo(lat = 35.6895, lng = 139.6917) {
 
 }
 
-function onDeleteLoc(locId) {
+function onDeleteLoc(locId, name) {
     locService.deleteLoc(locId)
     locService.getLocs().then(renderLocs)
+    flashMsg(`${name} has been delete`)
+
+
 }
 
 function onCopyLink() {
-    const link = `https://barbenshi.github.io/travel-tip/`
+    const queryStringParams = new URLSearchParams(window.location.search)
+    const lat = queryStringParams.get('lat') || ''
+    const lng = queryStringParams.get('lng') || 0
+    const link =
+        `https://barbenshi.github.io/travel-tip/index.html?lat=${lat}&lng=${lng}`
+    navigator.clipboard.writeText(link)
+
+    flashMsg('Copy to clipboard')
 }
 
 function renderLocs(locs) {
@@ -80,18 +99,25 @@ function renderLocs(locs) {
     const strHtmls = locs.map(({ id, lat, lng, name }) => `
     <article class="loc flex flex-column">
     <div class="head flex space-between">
-        <span>${name}</span>
-        <div class="btns-container">
-            <button class="go" onclick="onPanTo(${lat},${lng})">Go</button>
-            <button class="delete" onclick="onDeleteLoc('${id}')">Delete</button>
-        </div>
+    <span>${name}</span>
+    <div class="btns-container">
+    <button class="go" onclick="onPanTo(${lat},${lng})">Go</button>
+    <button class="delete" onclick="onDeleteLoc('${id}','${name}')">Delete</button>
+    </div>
     </div>
     <small>Lat:${lat}, Lang:${lng}</small>
     
-</article>
+    </article>
     `)
 
     document.querySelector('.saved-locs').innerHTML = strHtmls.join('')
+    return Promise.resolve(locs)
+}
+
+function renderMarkers(locs) {
+    locs.forEach(loc => {
+        mapService.addMarker(loc)
+    })
 }
 
 function onAddLoc(ev) {
@@ -104,4 +130,14 @@ function onAddLoc(ev) {
             locService.addLocation(address, pos.lat, pos.lng)
             locService.getLocs().then(renderLocs)
         })
+}
+
+
+function flashMsg(msg) {
+    const el = document.querySelector('.user-msg')
+    el.innerText = msg
+    el.classList.add('open')
+    setTimeout(() => {
+        el.classList.remove('open')
+    }, 3000)
 }

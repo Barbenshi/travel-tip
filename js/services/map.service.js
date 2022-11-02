@@ -29,7 +29,7 @@ function initMap() {
             let infoWindow = new google.maps.InfoWindow({
                 content: 'Click the map to get Lat/Lng!',
                 position: myLatlng,
-            });
+            })
 
             // infoWindow.open(gMap);
 
@@ -41,11 +41,11 @@ function initMap() {
                 // Create a new InfoWindow.
                 infoWindow = new google.maps.InfoWindow({
                     position: ev.latLng,
-                });
+                })
                 infoWindow.setContent(
                     JSON.stringify(ev.latLng.toJSON(), null, 2)
 
-                );
+                )
                 infoWindow.open(gMap);
                 // console.log(ev.latLng.toJSON())
 
@@ -54,8 +54,8 @@ function initMap() {
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
                 locService.addLocation(name, lat, lng)
-                locService.getLocs().then(appController.renderLocs)
-            });
+                locService.getLocs().then(appController.renderLocs).then(appController.renderMarkers)
+            })
         })
 }
 
