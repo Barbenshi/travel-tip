@@ -2,20 +2,22 @@
 /* Locations */
 
 .Locations {
-    border: 2px solid var(--clr0);
-    padding: 80px;
+    padding: 50px;
 }
 
 .saved-locs article{
-    background-color: var(--clr0);
+    background-color: whitesmoke;
     color: var(--clr3);
     border: 1px solid var(--clr3);
-    border-radius: 4px;
+    border-radius: 25px;
     padding: 5px;
+    padding-left:20px ;
+    padding-right:20px ;
+    margin-bottom: 2px;
 }
 
 .saved-locs article:hover {
-    background-color: var(--primaryClr);
+    background-color: var(--secondaryClr);
     cursor: pointer;
 }
 
@@ -23,6 +25,22 @@
     background-color: var(--secondaryClr);
 }
 
+.map-header {
+    background-color: var(--secondaryClr);
+    color: var(--clr0);
+    padding: 10px;
+}
+
+.map-controller {
+    background-color: transparent;
+}
+
+.map-controller > *{
+    flex-grow: 1;
+    /* background-color: var(--primaryClr); */
+    border-radius: 5px;
+    padding: 5px;
+}
 
 .user-msg {
     position: fixed;

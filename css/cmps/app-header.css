@@ -2,6 +2,7 @@
     background-color: var(--secondaryClr);
     color: var(--clr0);
     padding: 10px;
+    margin-bottom: 50px;
 }
 
 .main-header span{

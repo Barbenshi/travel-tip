@@ -1,4 +1,9 @@
 @media (max-width:1060px){
+
+    .main-header {
+        margin-bottom: 0;
+    }
+
     .map{
         padding-top:10px;
         width: 100%;
@@ -23,5 +28,7 @@
 
     .map{
         flex-basis: 50%;
+        margin: auto;
+        /* border: 5px solid var(--secondaryClr); */
     }
 }

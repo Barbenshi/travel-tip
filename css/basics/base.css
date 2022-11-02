@@ -4,21 +4,25 @@
 
 html{
     height: 100%;
-    background-color: var(--primaryClr);
+    background-color: var(--clr3);
 }
 
 body{
     margin: 0;
+    font-family: 'Roboto';
 }
 
 button {
     cursor: pointer;
     height: 100%;
+    
 }
 
 main{
     background-color: var(--clr1);
     height: 100%;
+    border-radius: 25px;
+    padding: 40px;
 }
 
 h1,

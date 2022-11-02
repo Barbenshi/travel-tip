@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TravelTip</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body class="main-layout">
+<body class="">
     <header class="main-header flex space-between align-center full main-layout">
         <h1>TravelTip</h1>
-        <h2>You are at: <span class="user-pos"></span></h2>
+        <!-- <h2><span class="user-pos"></span></h2> -->
 
         <form onsubmit="onSearchLoc(event)" class="search">
             <input type="search">
@@ -20,18 +21,23 @@
         </form>
     </header>
 
-    <main class="flex flex-column align-center space-between">
+    <main class="main-layout flex flex-column align-center space-between">
         <section class="map">
+            <header class="map-header flex space-between align-center">
+                <h2><span class="user-pos"></span></h2>
+            </header>
             <div class="google-map" id="map" style="width: 100%; height: 400px;"></div>
-            <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button>
-            <button onclick="onGetUserPos()" class="btn-user-pos">Get User Position</button>
-            <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button>
-            <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button>
-            <button onclick="onCopyLink()">Copy Link</button>
+            <div class="map-controller flex align-center space-between">
+                <button onclick="onGetUserPos()" class="btn-user-pos">My Location</button>
+                <button onclick="onCopyLink()">Copy Link</button>
+            </div>
+            <!-- <button onclick="onAddMarker()" class="btn-add-marker">Add Marker Speific Location</button> -->
+            <!-- <button onclick="onGetLocs()" class="btn-get-locs">Get Locations</button> -->
+            <!-- <button onclick="onPanTo()" class="btn-pan">Pan Map to Tokyo</button> -->
         </section>
 
         <div class="Locations">
-            <h2>Locations: </h2>
+            <h2>Locations </h2>
             <section class="saved-locs">
                 <article class="loc flex flex-column">
                     <div class="head flex space-between">
