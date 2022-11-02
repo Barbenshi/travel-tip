@@ -1,6 +1,5 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
-
 export const appController = {
     renderLocs,
 }
@@ -11,6 +10,7 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onDeleteLoc = onDeleteLoc
+window.onAddLoc = onAddLoc
 
 
 function onInit() {
@@ -92,4 +92,16 @@ function renderLocs(locs) {
     `)
 
     document.querySelector('.saved-locs').innerHTML = strHtmls.join('')
+}
+
+function onAddLoc(ev) {
+    ev.preventDefault()
+    const keyword = document.querySelector('header input').value
+    locService.getLocationByName(keyword)
+        .then(({ address, pos }) => {
+            onPanTo(pos.lat, pos.lng)
+            document.querySelector('form span').innerHTML = address
+            locService.addLocation(address, pos.lat, pos.lng)
+            locService.getLocs().then(renderLocs)
+        })
 }
