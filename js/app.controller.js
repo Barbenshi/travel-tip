@@ -23,9 +23,10 @@ function onInit() {
         }).then(res => {
 
             const queryStringParams = new URLSearchParams(window.location.search)
+            const name = queryStringParams.get('name') || ''
             const lat = queryStringParams.get('lat') || ''
             const lng = queryStringParams.get('lng') || 0
-            onPanTo(lat, lng)
+            onPanTo(name, lat, lng)
         }
         )
         .catch(() => console.log('Error: cannot init map'))
@@ -70,7 +71,7 @@ function onPanTo(name, lat = 35.6895, lng = 139.6917) {
     console.log('Panning the Map to,', name, lat, lng)
     mapService.panTo(lat, lng)
 
-    const queryStringParams = `?lat=${lat}&lng=${lng}`
+    const queryStringParams = `?name=${name}&lat=${lat}&lng=${lng}`
     const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
     window.history.pushState({ path: newUrl }, '', newUrl)
 
@@ -80,7 +81,7 @@ function onPanTo(name, lat = 35.6895, lng = 139.6917) {
 
 function onDeleteLoc(locId, name) {
     locService.deleteLoc(locId)
-    locService.getLocs().then(renderLocs)
+    locService.getLocs().then(renderLocs).then(renderMarkers)
     flashMsg(`${name} has been delete`)
 
 
@@ -88,10 +89,11 @@ function onDeleteLoc(locId, name) {
 
 function onCopyLink() {
     const queryStringParams = new URLSearchParams(window.location.search)
+    const name = queryStringParams.get('name') || ''
     const lat = queryStringParams.get('lat') || ''
     const lng = queryStringParams.get('lng') || 0
     const link =
-        `https://barbenshi.github.io/travel-tip/index.html?lat=${lat}&lng=${lng}`
+        `https://barbenshi.github.io/travel-tip/index.html?name${name}&lat=${lat}&lng=${lng}`
     navigator.clipboard.writeText(link)
 
     flashMsg('Copy to clipboard')
@@ -117,6 +119,7 @@ function renderLocs(locs) {
 }
 
 function renderMarkers(locs) {
+    mapService.resetMarkers()
     locs.forEach(loc => {
         mapService.addMarker(loc)
     })
@@ -127,10 +130,10 @@ function onAddLoc(ev) {
     const keyword = document.querySelector('header input').value
     locService.getLocationByName(keyword)
         .then(({ address, pos }) => {
-            onPanTo(pos.lat, pos.lng)
+            onPanTo(keyword, pos.lat, pos.lng)
             document.querySelector('form span').innerHTML = address
             locService.addLocation(address, pos.lat, pos.lng)
-            locService.getLocs().then(renderLocs)
+            locService.getLocs().then(renderLocs).then(renderMarkers)
         })
 }
 
@@ -148,7 +151,7 @@ function onUserAns(ans, lat, lng) {
     const placeName = document.querySelector('.place-input').value
     if (!placeName.trim()) return
     locService.addLocation(placeName, lat, lng)
-    locService.getLocs().then(renderLocs)
+    locService.getLocs().then(renderLocs).then(renderMarkers)
     mapService.closeWindow()
 }
 

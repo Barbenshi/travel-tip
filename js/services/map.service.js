@@ -7,12 +7,19 @@ export const mapService = {
     addMarker,
     panTo,
     closeWindow,
+    resetMarkers,
 }
 
 
 // Var that is used throughout this Module (not global)
 var gMap
 let gInfoWindow
+let gMarkers = []
+
+function resetMarkers() {
+    gMarkers.forEach(marker => marker.setMap(null))
+}
+
 
 function initMap() {
     const myLatlng = { lat: 32.0749831, lng: 34.9120554 }
@@ -74,7 +81,8 @@ function addMarker(loc) {
         map: gMap,
         title: 'Hello World!'
     })
-    return marker
+    // return marker
+    gMarkers.push(marker)
 }
 
 function panTo(lat, lng) {
