@@ -6,6 +6,8 @@ window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
+window.onDeleteLoc = onDeleteLoc
+
 
 function onInit() {
     mapService.initMap()
@@ -13,6 +15,7 @@ function onInit() {
             console.log('Map is ready')
         })
         .catch(() => console.log('Error: cannot init map'))
+    locService.getLocs().then(renderLocs)
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -42,12 +45,37 @@ function onGetUserPos() {
             console.log('User position is:', pos.coords)
             document.querySelector('.user-pos').innerText =
                 `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
+                onPanTo(pos.coords.latitude, pos.coords.longitude)
         })
         .catch(err => {
             console.log('err!!!', err)
         })
 }
-function onPanTo() {
-    console.log('Panning the Map')
-    mapService.panTo(35.6895, 139.6917)
+
+function onPanTo(lat = 35.6895, lng = 139.6917) {
+    console.log('Panning the Map to,',lat,lng)
+    mapService.panTo(lat, lng)
+}
+
+function onDeleteLoc(locId) {
+    locService.deleteLoc(+locId)
+    locService.getLocs().then(renderLocs)
+}
+
+function renderLocs(locs) {
+    const strHtmls = locs.map(({ id, lat, lng, name }) => `
+    <article class="loc flex flex-column">
+    <div class="head flex space-between">
+        <span>${name}</span>
+        <div class="btns-container">
+            <button class="go" onclick="onPanTo(${lat},${lng})">Go</button>
+            <button class="delete" onclick="onDeleteLoc(${id})">Delete</button>
+        </div>
+    </div>
+    <small>Lat:${lat}, Lang:${lng}</small>
+    
+</article>
+    `)
+
+    document.querySelector('.saved-locs').innerHTML = strHtmls.join('')
 }

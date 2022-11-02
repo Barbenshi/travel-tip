@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TravelTip</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
     <h1>TravelTip Starter</h1>
@@ -14,9 +15,22 @@
     <button onclick="onPanTo()"class="btn-pan">Pan Map to Tokyo</button>
 
     <p>You are at: <span class="user-pos"></span></p>
-    <p>Locations: 
-        <pre class="locs"></pre>
-    </p>
+    <div class="Locations">
+        <h2>Locations: </h2>
+        <section class="saved-locs">
+            <article class="loc flex flex-column">
+                <div class="head flex space-between">
+                    <span>Name:</span>
+                    <div class="btns-container">
+                        <button class="go" onclick="onPanTo()">Go</button>
+                        <button class="delete" onclick="onDeleteLoc()">Delete</button>
+                    </div>
+                </div>
+                <small>Lat:, Lang:</small>
+                
+            </article>
+        </section>
+    </div>
     
 
     <script type="module" src="js/app.controller.js"></script>
