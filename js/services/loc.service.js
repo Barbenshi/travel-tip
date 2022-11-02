@@ -1,6 +1,7 @@
 export const locService = {
     getLocs,
-    deleteLoc
+    deleteLoc,
+    addLocation,
 }
 
 
@@ -22,3 +23,8 @@ function deleteLoc(locId) {
     locs.splice(locIdx, 1)
 }
 
+function addLocation(locName, lat, lng) {
+    locs.push({ id: makeId(), locName, lat, lng })
+
+    console.log(locs);
+}

@@ -1,3 +1,4 @@
+
 export const mapService = {
     initMap,
     addMarker,
@@ -8,17 +9,49 @@ export const mapService = {
 // Var that is used throughout this Module (not global)
 var gMap
 
-function initMap(lat = 32.0749831, lng = 34.9120554) {
+function initMap() {
+    const myLatlng = { lat: 32.0749831, lng: 34.9120554 }
     console.log('InitMap')
     return _connectGoogleApi()
         .then(() => {
             console.log('google available')
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
-                center: { lat, lng },
+                center: myLatlng,
                 zoom: 15
             })
             console.log('Map!', gMap)
+
+            // Create the initial InfoWindow.
+            let infoWindow = new google.maps.InfoWindow({
+                content: 'Click the map to get Lat/Lng!',
+                position: myLatlng,
+            });
+
+            // infoWindow.open(gMap);
+
+            // Configure the click listener.
+            gMap.addListener('click', (ev) => {
+                // Close the current InfoWindow.
+                infoWindow.close()
+
+                // Create a new InfoWindow.
+                infoWindow = new google.maps.InfoWindow({
+                    position: ev.latLng,
+                });
+                infoWindow.setContent(
+                    JSON.stringify(ev.latLng.toJSON(), null, 2)
+
+                );
+                infoWindow.open(gMap);
+                // console.log(ev.latLng.toJSON())
+
+                const locName = prompt('Enter place name', 'place')
+                if (!locName) return
+                const lat = ev.latLng.lat()
+                const lng = ev.latLng.lng()
+                addLocation(locName, lat, lng)
+            });
         })
 }
 
