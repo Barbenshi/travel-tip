@@ -93,7 +93,7 @@ function onCopyLink() {
     const lat = queryStringParams.get('lat') || ''
     const lng = queryStringParams.get('lng') || 0
     const link =
-        `https://barbenshi.github.io/travel-tip/?name'${name}'&lat=${lat}&lng=${lng}`
+        `https://barbenshi.github.io/travel-tip/?name='${name}'&lat=${lat}&lng=${lng}`
     navigator.clipboard.writeText(link)
 
     flashMsg('Copy to clipboard')
