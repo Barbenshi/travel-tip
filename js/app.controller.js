@@ -64,7 +64,7 @@ function onGetUserPos() {
 
 function onPanTo(name, lat = 35.6895, lng = 139.6917) {
     mapService.panTo(lat, lng)
-    const queryStringParams = `?name='${name}'&lat=${lat}&lng=${lng}`
+    const queryStringParams = `?name=${name}&lat=${lat}&lng=${lng}`
     const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + queryStringParams
     window.history.pushState({ path: newUrl }, '', newUrl)
 
@@ -83,7 +83,7 @@ function onCopyLink() {
     const lat = queryStringParams.get('lat')
     const lng = queryStringParams.get('lng')
     const link =
-        `https://barbenshi.github.io/travel-tip/?name='${name}'&lat=${lat}&lng=${lng}`
+        `https://barbenshi.github.io/travel-tip/?name=${name}&lat=${lat}&lng=${lng}`
     navigator.clipboard.writeText(link)
 
     flashMsg('Copy to clipboard')
