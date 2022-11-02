@@ -1,3 +1,6 @@
+import { locService } from './loc.service.js'
+import { appController } from '../app.controller.js'
+
 
 export const mapService = {
     initMap,
@@ -46,11 +49,12 @@ function initMap() {
                 infoWindow.open(gMap);
                 // console.log(ev.latLng.toJSON())
 
-                const locName = prompt('Enter place name', 'place')
-                if (!locName) return
+                const name = prompt('Enter place name', 'place')
+                if (!name) return
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
-                addLocation(locName, lat, lng)
+                locService.addLocation(name, lat, lng)
+                locService.getLocs().then(appController.renderLocs)
             });
         })
 }
