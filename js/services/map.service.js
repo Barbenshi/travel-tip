@@ -1,4 +1,5 @@
-
+import { locService } from "./loc.service.js"
+import { appController } from "../app.controller.js"
 export const mapService = {
     initMap,
     addMarker,
@@ -50,7 +51,8 @@ function initMap() {
                 if (!locName) return
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
-                addLocation(locName, lat, lng)
+                locService.addLocation(locName, lat, lng)
+                locService.getLocs().then(appController.renderLocs)    
             });
         })
 }

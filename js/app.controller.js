@@ -1,5 +1,8 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+export const appController = {
+    renderLocs,
+}
 
 window.onload = onInit
 window.onAddMarker = onAddMarker
@@ -7,6 +10,7 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onDeleteLoc = onDeleteLoc
+window.onAddLoc = onAddLoc
 
 
 function onInit() {
@@ -45,7 +49,7 @@ function onGetUserPos() {
             console.log('User position is:', pos.coords)
             document.querySelector('.user-pos').innerText =
                 `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
-                onPanTo(pos.coords.latitude, pos.coords.longitude)
+            onPanTo(pos.coords.latitude, pos.coords.longitude)
         })
         .catch(err => {
             console.log('err!!!', err)
@@ -53,7 +57,7 @@ function onGetUserPos() {
 }
 
 function onPanTo(lat = 35.6895, lng = 139.6917) {
-    console.log('Panning the Map to,',lat,lng)
+    console.log('Panning the Map to,', lat, lng)
     mapService.panTo(lat, lng)
 }
 
@@ -78,4 +82,16 @@ function renderLocs(locs) {
     `)
 
     document.querySelector('.saved-locs').innerHTML = strHtmls.join('')
+}
+
+function onAddLoc(ev) {
+    ev.preventDefault()
+    const keyword = document.querySelector('header input').value
+    locService.getLocationByName(keyword)
+        .then(({ address , pos }) => {
+            onPanTo(pos.lat, pos.lng)
+            document.querySelector('form span').innerHTML = address
+            locService.addLocation(address, pos.lat, pos.lng)
+            locService.getLocs().then(renderLocs)
+        })
 }

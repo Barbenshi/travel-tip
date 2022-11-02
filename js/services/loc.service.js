@@ -1,8 +1,13 @@
+import { utilService } from "./util.service.js"
 export const locService = {
     getLocs,
     deleteLoc,
     addLocation,
+    getLocationByName,
 }
+
+const API_KEY = `AIzaSyBX-t9hQNd1M5-aEGol3kXf6F-wZIDrjaI`
+
 
 
 const locs = [
@@ -23,8 +28,21 @@ function deleteLoc(locId) {
     locs.splice(locIdx, 1)
 }
 
-function addLocation(locName, lat, lng) {
-    locs.push({ id: makeId(), locName, lat, lng })
+function addLocation(name, lat, lng) {
+    locs.push({ id: utilService.makeId(), name, lat, lng })
 
     console.log(locs);
+}
+
+function getLocationByName(keyword) {
+    const locUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=${API_KEY}`
+    return axios.get(locUrl)
+        .then(({ data }) => {
+            if (!data.results[0]) return Promise.reject('no places found')
+            return {
+                address: data.results[0].formatted_address,
+                pos: data.results[0].geometry.location
+            }
+        }
+        )
 }
