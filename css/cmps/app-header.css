@@ -1,0 +1,9 @@
+.main-header {
+    background-color: var(--secondaryClr);
+    color: var(--clr0);
+    padding: 10px;
+}
+
+.main-header span{
+    text-transform: capitalize;
+}
