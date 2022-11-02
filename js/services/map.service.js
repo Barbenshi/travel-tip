@@ -5,12 +5,14 @@ import { appController } from '../app.controller.js'
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    closeWindow,
 }
 
 
 // Var that is used throughout this Module (not global)
 var gMap
+let gInfoWindow
 
 function initMap() {
     const myLatlng = { lat: 32.0749831, lng: 34.9120554 }
@@ -26,7 +28,7 @@ function initMap() {
             console.log('Map!', gMap)
 
             // Create the initial InfoWindow.
-            let infoWindow = new google.maps.InfoWindow({
+            gInfoWindow = new google.maps.InfoWindow({
                 content: 'Click the map to get Lat/Lng!',
                 position: myLatlng,
             });
@@ -36,25 +38,32 @@ function initMap() {
             // Configure the click listener.
             gMap.addListener('click', (ev) => {
                 // Close the current InfoWindow.
-                infoWindow.close()
+                gInfoWindow.close()
 
                 // Create a new InfoWindow.
-                infoWindow = new google.maps.InfoWindow({
+                gInfoWindow = new google.maps.InfoWindow({
                     position: ev.latLng,
                 });
-                infoWindow.setContent(
-                    JSON.stringify(ev.latLng.toJSON(), null, 2)
+                // infoWindow.setContent(
+                //     JSON.stringify(ev.latLng.toJSON(), null, 2)
 
-                );
-                infoWindow.open(gMap);
-                // console.log(ev.latLng.toJSON())
-
-                const name = prompt('Enter place name', 'place')
-                if (!name) return
+                // );
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
-                locService.addLocation(name, lat, lng)
-                locService.getLocs().then(appController.renderLocs)
+                const inputForm =
+                    `
+                <div class="loc-modal flex flex-column justify-center align-center">    
+                Place Name: <input type="text" class="place-input">
+                <small>pos:${JSON.stringify(ev.latLng.toJSON(), null, 2)}</small>
+                <div class="confirm-btns flex ">
+                <button onclick="onUserAns(true,${lat},${lng})">Save Place</button>
+                <button onclick="onUserAns(false)">Cancel</button>
+                </div>
+                </div>
+                `
+                gInfoWindow.setContent(inputForm)
+                gInfoWindow.open(gMap);
+                // console.log(ev.latLng.toJSON())
             });
         })
 }
@@ -88,3 +97,7 @@ function _connectGoogleApi() {
     })
 }
 
+
+function closeWindow() {
+    gInfoWindow.close()
+}

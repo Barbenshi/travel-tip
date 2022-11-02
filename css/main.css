@@ -1,33 +1,13 @@
-*{
-    box-sizing: border-box;
-}
+/* SETUP */
+@import url('setup/typography.css');
+@import url('setup/variables.css');
 
-body{
-    margin: 0;
-}
+/* BASICS */
+@import url('basics/base.css');
+@import url('basics/forms.css');
+@import url('basics/helpers.css');
+@import url('basics/layout.css');
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6{
-    margin: 0;
-}
-
-article{
-    background-color: aquamarine;
-    gap: 1px;
-}
-
-.flex{
-    display: flex;
-}
-
-.flex-column{
-    flex-direction: column;
-}
-
-.space-between{
-    justify-content: space-between;
-}
+/* COMPONENTS */
+@import url('cmps/app-header.css');
+@import url('cmps/app-main.css');
