@@ -1,6 +1,3 @@
-import { locService } from './loc.service.js'
-import { appController } from '../app.controller.js'
-
 
 export const mapService = {
     initMap,
@@ -10,8 +7,6 @@ export const mapService = {
     resetMarkers,
 }
 
-
-// Var that is used throughout this Module (not global)
 var gMap
 let gInfoWindow
 let gMarkers = []
@@ -20,41 +15,26 @@ function resetMarkers() {
     gMarkers.forEach(marker => marker.setMap(null))
 }
 
-
 function initMap() {
     const myLatlng = { lat: 32.0749831, lng: 34.9120554 }
-    console.log('InitMap')
     return _connectGoogleApi()
         .then(() => {
-            console.log('google available')
             gMap = new google.maps.Map(
                 document.querySelector('#map'), {
                 center: myLatlng,
                 zoom: 15
             })
-            console.log('Map!', gMap)
 
-            // Create the initial InfoWindow.
             gInfoWindow = new google.maps.InfoWindow({
                 content: 'Click the map to get Lat/Lng!',
                 position: myLatlng,
             })
 
-            // infoWindow.open(gMap);
-
-            // Configure the click listener.
             gMap.addListener('click', (ev) => {
-                // Close the current InfoWindow.
                 gInfoWindow.close()
-
-                // Create a new InfoWindow.
                 gInfoWindow = new google.maps.InfoWindow({
                     position: ev.latLng,
                 });
-                // infoWindow.setContent(
-                //     JSON.stringify(ev.latLng.toJSON(), null, 2)
-
-                // );
                 const lat = ev.latLng.lat()
                 const lng = ev.latLng.lng()
                 const inputForm =
@@ -70,7 +50,6 @@ function initMap() {
                 `
                 gInfoWindow.setContent(inputForm)
                 gInfoWindow.open(gMap);
-                // console.log(ev.latLng.toJSON())
             });
         })
 }
@@ -81,7 +60,6 @@ function addMarker(loc) {
         map: gMap,
         title: 'Hello World!'
     })
-    // return marker
     gMarkers.push(marker)
 }
 
@@ -89,7 +67,6 @@ function panTo(lat, lng) {
     var laLatLng = new google.maps.LatLng(lat, lng)
     gMap.panTo(laLatLng)
 }
-
 
 function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
@@ -104,7 +81,6 @@ function _connectGoogleApi() {
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
 }
-
 
 function closeWindow() {
     gInfoWindow.close()
