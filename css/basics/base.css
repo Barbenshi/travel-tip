@@ -4,6 +4,11 @@
 
 body{
     margin: 0;
+    background-color: var(--clr3);
+}
+
+button {
+    cursor: pointer;
 }
 
 h1,

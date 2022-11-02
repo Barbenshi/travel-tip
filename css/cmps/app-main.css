@@ -1,16 +1,35 @@
 
 /* Locations */
-main article{
-    background-color: aquamarine;
-    gap: 1px;
+
+.Locations {
+    border: 2px solid var(--clr0);
+    padding: 80px;
 }
+
+.saved-locs article{
+    background-color: var(--clr0);
+    color: var(--clr3);
+    border: 1px solid var(--clr3);
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.saved-locs article:hover {
+    background-color: var(--primaryClr);
+    cursor: pointer;
+}
+
+.saved-locs article .active {
+    background-color: var(--secondaryClr);
+}
+
 
 .user-msg {
     position: fixed;
     bottom: -100px;
     right: 10px;
-    background-color: #111;
-    color: whitesmoke;
+    background-color: var(--clr0);
+    color: var(--clr3);
     padding: 10px;
 }
 

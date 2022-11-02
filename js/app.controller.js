@@ -91,12 +91,11 @@ function onCopyLink() {
 
 function renderLocs(locs) {
     const strHtmls = locs.map(({ id, lat, lng, name }) => `
-    <article class="loc flex flex-column">
+    <article onclick="onPanTo('${name}',${lat},${lng})" class="loc flex flex-column">
     <div class="head flex space-between">
         <span>${name}</span>
         <div class="btns-container">
-            <button class="go" onclick="onPanTo('${name}',${lat},${lng})">Go</button>
-            <button class="delete" onclick="onDeleteLoc('${id}','${name}')">Delete</button>
+            <button class="delete" onclick="onDeleteLoc('${id}','${name}')">&#10005;</button>
         </div>
     </div>
     <small>Lat:${lat}, Lang:${lng}</small>
